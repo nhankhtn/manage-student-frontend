@@ -9,14 +9,14 @@ export class AddressApi {
     return await apiGet(`/address/provinces`);
   }
 
-  static async getDistrictOfProvinces({
+  static async getProvincesById({
     province_code,
-    depth = 2,
+    depth = 3,
   }: {
     province_code: number;
     depth?: number;
   }): Promise<Province> {
-    return await apiGet(`/address/districts/${province_code}`, {
+    return await apiGet(`/address/provinces/${province_code}`, {
       depth,
     });
   }

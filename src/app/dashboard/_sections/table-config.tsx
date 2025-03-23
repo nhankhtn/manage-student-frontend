@@ -16,15 +16,10 @@ export function objectToAddress(address: any) {
     .join(", ");
 }
 
-export const getTableConfig = ({
-  programs,
-  statuses,
-  faculties,
-}: {
-  programs: Program[];
-  statuses: Status[];
-  faculties: Faculty[];
-}): CustomTableConfig<Student["id"], Student>[] => [
+export const getTableConfig = (): CustomTableConfig<
+  Student["id"],
+  Student
+>[] => [
   {
     key: "mssv",
     headerLabel: "Mã số sinh viên",
@@ -54,7 +49,7 @@ export const getTableConfig = ({
     headerLabel: "Ngày sinh",
     type: "string",
     renderCell: (data) => (
-      <Typography variant='body2'>{data.dateOfBirth}</Typography>
+      <Typography variant='body2'>{data.date_of_birth}</Typography>
     ),
   },
   {
@@ -82,7 +77,7 @@ export const getTableConfig = ({
     headerLabel: "Địa chỉ thường trú",
     type: "string",
     renderCell: (data) => {
-      const address = parseStringToAddress(data.permanentAddress);
+      const address = parseStringToAddress(data.permanent_address);
       return (
         <Typography variant='body2' width={300} whiteSpace={"normal"}>
           {objectToAddress(address)}
@@ -95,10 +90,10 @@ export const getTableConfig = ({
     headerLabel: "Địa chị tạm trú",
     type: "string",
     renderCell: (data) => {
-      const address = parseStringToAddress(data.temporaryAddress);
+      const address = parseStringToAddress(data.temporary_address);
       return (
         <Typography variant='body2' width={300} whiteSpace={"normal"}>
-          {data.temporaryAddress ? objectToAddress(address) : "Trống"}
+          {data.temporary_address ? objectToAddress(address) : "Trống"}
         </Typography>
       );
     },
@@ -108,10 +103,10 @@ export const getTableConfig = ({
     headerLabel: "Địa chỉ nhận thư",
     type: "string",
     renderCell: (data) => {
-      const address = parseStringToAddress(data.mailingAddress);
+      const address = parseStringToAddress(data.mailing_address);
       return (
         <Typography variant='body2'>
-          {data.mailingAddress ? objectToAddress(address) : "Trống"}
+          {data.mailing_address ? objectToAddress(address) : "Trống"}
         </Typography>
       );
     },
@@ -121,9 +116,7 @@ export const getTableConfig = ({
     headerLabel: "Khoa",
     type: "string",
     renderCell: (data) => (
-      <Typography variant='body2'>
-        {faculties.find((f) => f.id === data.faculty)?.name}
-      </Typography>
+      <Typography variant='body2'>{data.faculty}</Typography>
     ),
   },
   {
@@ -139,9 +132,7 @@ export const getTableConfig = ({
     headerLabel: "Chương trình",
     type: "string",
     renderCell: (data) => (
-      <Typography variant='body2'>
-        {programs.find((p) => p.id === data.program)?.name}
-      </Typography>
+      <Typography variant='body2'>{data.program}</Typography>
     ),
   },
   {
@@ -149,9 +140,7 @@ export const getTableConfig = ({
     headerLabel: "Trạng thái",
     type: "string",
     renderCell: (data) => (
-      <Typography variant='body2'>
-        {statuses.find((s) => s.id === data.status)?.name}
-      </Typography>
+      <Typography variant='body2'>{data.status}</Typography>
     ),
   },
 ];

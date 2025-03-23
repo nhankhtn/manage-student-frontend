@@ -4,20 +4,15 @@ import { StudentApi } from "@/api/students";
 import { useDialog } from "@/hooks/use-dialog";
 import useFunction from "@/hooks/use-function";
 import usePagination from "@/hooks/use-pagination";
-import { Student, StudentFilter } from "@/types/student";
+import { faculties, statuses, Student, StudentFilter } from "@/types/student";
 import { useEffect, useMemo, useState } from "react";
 import { getFilterConfig } from "./filter-config";
-import { useFaculty } from "./use-faculty";
-import { useStatus } from "./use-status";
-import { useProgram } from "./use-program";
 import { normalizeString } from "@/utils/string-helper";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const useDashboardSearch = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { faculties } = useFaculty();
-  const { statuses } = useStatus();
   const [filter, setFilter] = useState<StudentFilter>({
     key: "",
     status: "",
@@ -52,22 +47,10 @@ const useDashboardSearch = () => {
   });
   const createStudentsApi = useFunction(StudentApi.createStudent, {
     successMessage: "Thêm sinh viên thành công",
-    onSuccess: ({
-      result,
-    }: {
-      result: {
-        data: {
-          acceptableStudents: Student[];
-          unacceptableStudents: Omit<Student, "id">[];
-        };
-      };
-    }) => {
-      console.log("res: ", result);
+    onSuccess: ({ result }: { result: Student }) => {
       getStudentsApi.setData({
-        data: [...students, ...result.data.acceptableStudents],
-        total:
-          (getStudentsApi.data?.total || 0) +
-          result.data.acceptableStudents.length,
+        data: [...students, result],
+        total: (getStudentsApi.data?.total || 0) + 1,
       });
     },
   });
@@ -118,7 +101,6 @@ const useDashboardSearch = () => {
 
   useEffect(() => {
     const currentParams = new URLSearchParams();
-
     Object.entries(filter).forEach(([key, value]) => {
       if (value) {
         currentParams.set(key, value);
@@ -136,7 +118,7 @@ const useDashboardSearch = () => {
         label: "Tất cả",
       },
       ...statuses.map((s) => ({
-        value: normalizeString(s.name),
+        value: s.name,
         label: s.name,
       })),
     ],
@@ -146,7 +128,7 @@ const useDashboardSearch = () => {
         label: "Tất cả",
       },
       ...faculties.map((s) => ({
-        value: normalizeString(s.name),
+        value: s.name,
         label: s.name,
       })),
     ],

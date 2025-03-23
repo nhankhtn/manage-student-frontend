@@ -18,6 +18,6 @@ export class ProgramApi {
     return await apiPut(`/program/${program.id}`, program);
   }
   static async deleteProgram(id: string): Promise<void> {
-    await apiDelete(`/program//id/${id}`, {});
+    await apiDelete(`/program/id/${id}`, {});
   }
 }

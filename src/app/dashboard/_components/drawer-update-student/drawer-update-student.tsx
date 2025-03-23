@@ -61,10 +61,7 @@ interface DrawerUpdateStudentProps {
   open: boolean;
   onClose: () => void;
   addStudent: (student: Student) => Promise<void>;
-  updateStudent: (student: Student | Omit<Student,'email'>) => Promise<void>;
-  faculties: Faculty[];
-  statuses: Status[];
-  programs: Program[];
+  updateStudent: (student: Student | Omit<Student, "email">) => Promise<void>;
 }
 
 export const IDENTITY_TYPES = [
@@ -88,9 +85,6 @@ function DrawerUpdateStudent({
   onClose,
   addStudent,
   updateStudent,
-  faculties,
-  statuses,
-  programs,
 }: DrawerUpdateStudentProps) {
   const { countries } = useMainContext();
 
@@ -101,9 +95,9 @@ function DrawerUpdateStudent({
     //  eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  const permanentAddress = parseStringToAddress(student?.permanentAddress);
-  const temporaryAddress = parseStringToAddress(student?.temporaryAddress);
-  const mailingAddress = parseStringToAddress(student?.mailingAddress);
+  const permanentAddress = parseStringToAddress(student?.permanent_address);
+  const temporaryAddress = parseStringToAddress(student?.temporary_address);
+  const mailingAddress = parseStringToAddress(student?.mailing_address);
 
   const handleSubmit = useCallback(
     async (values: any) => {
@@ -138,31 +132,18 @@ function DrawerUpdateStudent({
           detail: values.mailingDetail,
         };
       }
-
-      // Construct identity object
-      const identity = {
-        type: values.identityType,
-        documentNumber: values.identityDocumentNumber,
-        issueDate: new Date(values.identityIssueDate),
-        issuePlace: values.identityIssuePlace,
-        expiryDate: new Date(values.identityExpiryDate),
-        countryIssue: values.identityCountry,
-        isChip: values.identityIsChip,
-        notes: values.identityNotes,
-      };
-
       // Construct student object
       const studentData: Student = {
         id: values.id,
         name: values.name,
-        dateOfBirth: values.dateOfBirth,
+        date_of_birth: values.dateOfBirth,
         gender: values.gender,
         email: values.email,
-        permanentAddress: JSON.stringify(permanentAddress),
-        temporaryAddress: values.useTemporaryAddress
+        permanent_address: JSON.stringify(permanentAddress),
+        temporary_address: values.useTemporaryAddress
           ? JSON.stringify(temporaryAddress)
           : "",
-        mailingAddress: values.useMailingAddress
+        mailing_address: values.useMailingAddress
           ? JSON.stringify(mailingAddress)
           : "",
         faculty: values.faculty,
@@ -170,18 +151,12 @@ function DrawerUpdateStudent({
         program: values.program,
         phone: values.phone,
         status: values.status,
-        identity: identity,
+        // identity: identity,
         nationality: values.nationality,
       };
 
       if (student) {
-        
-        if (studentData.email === student.email) {
-          const { email, ...studentDataWithoutEmail } = studentData;
-          await updateStudent(studentDataWithoutEmail);
-        } else {
-          await updateStudent(studentData);
-        }
+        await updateStudent(studentData);
       } else {
         await addStudent(studentData);
       }
@@ -193,7 +168,7 @@ function DrawerUpdateStudent({
     () => ({
       id: student?.id || "",
       name: student?.name || "",
-      dateOfBirth: student?.dateOfBirth.split("T")[0] || "",
+      dateOfBirth: student?.date_of_birth.split("T")[0] || "",
       gender: student?.gender || Gender.Male,
       email: student?.email || "",
 
@@ -205,7 +180,7 @@ function DrawerUpdateStudent({
       permanentDetail: permanentAddress.detail || "",
 
       // Temporary address
-      useTemporaryAddress: !!student?.temporaryAddress,
+      useTemporaryAddress: !!student?.temporary_address,
       temporaryCountry: temporaryAddress.country || COUNTRY_DEFAULT,
       temporaryProvince: temporaryAddress.province || "",
       temporaryDistrict: temporaryAddress.district || "",
@@ -213,7 +188,7 @@ function DrawerUpdateStudent({
       temporaryDetail: temporaryAddress.detail || "",
 
       // Mailing address
-      useMailingAddress: !!student?.mailingAddress,
+      useMailingAddress: !!student?.mailing_address,
       mailingCountry: mailingAddress.country || COUNTRY_DEFAULT,
       mailingProvince: mailingAddress.province || "",
       mailingDistrict: mailingAddress.district || "",
@@ -221,27 +196,15 @@ function DrawerUpdateStudent({
       mailingDetail: mailingAddress.detail || "",
 
       // Academic info
-      faculty: faculties.find((f) => f.id === student?.faculty)?.id || "",
+      faculty: student?.faculty || "",
       course: student?.course || 0,
-      program: programs.find((p) => p.id === student?.program)?.id || "",
+      program: student?.program || "",
       phone: student?.phone || "",
-      status: statuses.find((s) => s.id === student?.status)?.id || "",
-
-      // Identity info
-      identityType: student?.identity.type || 0,
-      identityDocumentNumber: student?.identity.documentNumber || "",
-      identityIssueDate: formatDate(student?.identity.issueDate || new Date()),
-      identityIssuePlace: student?.identity.issuePlace || "",
-      identityExpiryDate: formatDate(
-        student?.identity.expiryDate || new Date()
-      ),
-      identityCountry: student?.identity.countryIssue || COUNTRY_DEFAULT,
-      identityIsChip: !!student?.identity.isChip,
-      identityNotes: student?.identity.notes || "",
+      status: student?.status || "",
       nationality: student?.nationality || COUNTRY_DEFAULT,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [student, faculties, programs, statuses]
+    [student]
   );
   const formik = useFormik({
     initialValues,
@@ -413,15 +376,9 @@ function DrawerUpdateStudent({
 
         <AddressStudentForm formik={formik} open={open} countries={countries} />
 
-        <Divider />
+        {/* <Divider /> */}
 
-        <AdditionalInformationForm
-          formik={formik}
-          countries={countries}
-          programs={programs}
-          faculties={faculties}
-          statuses={statuses}
-        />
+        <AdditionalInformationForm formik={formik} countries={countries} />
       </Stack>
     </Drawer>
   );
