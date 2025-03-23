@@ -8,13 +8,13 @@ export interface FilterConfigProps {
 export const getFilterConfig = (options: FilterConfigProps) => [
   {
     label: "Trạng thái",
-    key: "status_name",
+    key: "status",
     options: options["status"],
     xs: 6,
   },
   {
     label: "Khoa",
-    key: "faculty_name",
+    key: "faculty",
     options: options["faculty"],
     xs: 6,
   },
