@@ -12,16 +12,16 @@ import {
 import { People as PeopleIcon, Add as AddIcon } from "@mui/icons-material";
 import SearchBar from "@/app/dashboard/_components/search-bar";
 import RowStack from "@/components/row-stack";
-import DialogConfirmDelete from "../_components/dialog-confirm-delete";
-import useDashboardSearch from "./use-dashboard-search";
+import DialogConfirmDelete from "../../_components/dialog-confirm-delete";
+import useDashboardSearch from "../use-dashboard-search";
 import { CustomTable } from "@/components/custom-table";
 import CustomPagination from "@/components/custom-pagination";
-import SelectFilter from "../_components/select-filter";
+import SelectFilter from "../../../../components/select-filter";
 import { getTableConfig } from "./table-config";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DrawerUpdateStudent from "../_components/drawer-update-student/drawer-update-student";
+import DrawerUpdateStudent from "../../_components/drawer-update-student/drawer-update-student";
 
-const Content = () => {
+const ContentDesktop = () => {
   const {
     dialog,
     dialogConfirmDelete,
@@ -214,4 +214,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default ContentDesktop;

@@ -7,7 +7,7 @@ import {
   Student,
 } from "@/types/student";
 import { Typography } from "@mui/material";
-import { parseStringToAddress } from "../_components/drawer-update-student/drawer-update-student";
+import { parseStringToAddress } from "../../_components/drawer-update-student/drawer-update-student";
 
 export function objectToAddress(address: any) {
   return Object.entries(address)
