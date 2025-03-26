@@ -3,7 +3,7 @@
 import { useMediaQuery } from "@mui/system";
 import ContentDesktop from "./_sections/desktop/content";
 import { Theme } from "@mui/material";
-import ContentMobile from "./_sections/moible/context";
+import ContentMobile from "./_sections/moible/content";
 
 export default function Page() {
   const isMobile = useMediaQuery((theme: Theme) =>
