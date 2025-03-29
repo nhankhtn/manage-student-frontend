@@ -6,8 +6,7 @@ import useFunction from "@/hooks/use-function";
 import usePagination from "@/hooks/use-pagination";
 import { faculties, statuses, Student, StudentFilter } from "@/types/student";
 import { useEffect, useMemo, useState } from "react";
-import { getFilterConfig } from "./filter-config";
-import { normalizeString } from "@/utils/string-helper";
+import { getFilterConfig } from "./desktop/filter-config";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const useDashboardSearch = () => {

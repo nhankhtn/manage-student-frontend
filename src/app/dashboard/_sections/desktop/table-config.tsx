@@ -1,18 +1,13 @@
 import { CustomTableConfig } from "@/components/custom-table";
-import {
-  Faculty,
-  mappingGender,
-  Program,
-  Status,
-  Student,
-} from "@/types/student";
+import { mappingGender, Student } from "@/types/student";
 import { Typography } from "@mui/material";
-import { parseStringToAddress } from "../_components/drawer-update-student/drawer-update-student";
+import { parseStringToAddress } from "../../_components/drawer-update-student/drawer-update-student";
 
 export function objectToAddress(address: any) {
   return Object.entries(address)
     .map(([, value]) => value)
     .filter(Boolean)
+    .reverse()
     .join(", ");
 }
 
